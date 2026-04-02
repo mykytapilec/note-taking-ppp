@@ -1,10 +1,11 @@
 import { Router } from "express";
-import { getNotes, addNote, getNoteHtml } from "../controllers/note.controller";
+import { getNotes, addNote, getNoteHtml, checkNoteGrammar } from "../controllers/note.controller";
 
 const router = Router();
 
 router.get("/", getNotes);
 router.post("/", addNote);
+router.get("/:id/grammar", checkNoteGrammar);
 router.get("/:id/html", getNoteHtml);
 
 export default router;
