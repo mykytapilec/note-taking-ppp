@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { getAllNotes, createNote, getNoteById } from "../services/note.service";
+import { getAllNotes, createNote, getNoteById, updateNote, deleteNote } from "../services/note.service";
 import { renderMarkdown } from "../utils/markdown";
 import { checkGrammar } from "../utils/grammar";
 
@@ -64,4 +64,35 @@ export const checkNoteGrammar = (req: Request, res: Response) => {
     id: note.id,
     issues,
   });
+};
+
+export const updateNoteById = (req: Request, res: Response) => {
+  const { id } = req.params;
+  const noteId = Array.isArray(id) ? id[0] : id;
+  const { content } = req.body;
+
+  if (!content) {
+    return res.status(400).json({ error: "Content is required" });
+  }
+
+  const updated = updateNote(noteId, content);
+
+  if (!updated) {
+    return res.status(404).json({ error: "Note not found" });
+  }
+
+  res.json(updated);
+};
+
+export const deleteNoteById = (req: Request, res: Response) => {
+  const { id } = req.params;
+  const noteId = Array.isArray(id) ? id[0] : id;
+
+  const deleted = deleteNote(noteId);
+
+  if (!deleted) {
+    return res.status(404).json({ error: "Note not found" });
+  }
+
+  res.json({ message: "Note deleted" });
 };

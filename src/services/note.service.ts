@@ -24,3 +24,21 @@ export const createNote = (content: string) => {
 export const getNoteById = (id: string) => {
   return notes.find((note) => note.id === id);
 };
+
+export const updateNote = (id: string, content: string) => {
+  const note = notes.find((n) => n.id === id);
+
+  if (!note) return null;
+
+  note.content = content;
+  return note;
+};
+
+export const deleteNote = (id: string) => {
+  const index = notes.findIndex((n) => n.id === id);
+
+  if (index === -1) return false;
+
+  notes.splice(index, 1);
+  return true;
+};
